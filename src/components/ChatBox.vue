@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import ollama from 'ollama';
-import {ref} from "vue";
+import {ref, toRaw} from "vue";
+import axios from "axios";
 
 const chatInput = ref('Why is the sky blue?')
 
-const submitChat = async () => {
-  const content = chatInput.value;
-  chatInput.value = '';
-  const response = await ollama.chat({
-    model: 'llama2',
-    messages: [{ role: 'user', content }],
-  });
-  console.log(response.message.content);
+
+
+async function submitChat(){
+  await axios.post("http://127.0.0.1:11434/api/generate",
+      {
+        "model":"mistral",
+        "prompt":toRaw(chatInput.value),
+        "stream":false
+      }
+  )
+      .then((response)=>{
+        console.log(response.data.response)
+      })
 }
+
 </script>
 
 <template>
