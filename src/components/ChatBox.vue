@@ -2,11 +2,14 @@
 import {ref, toRaw} from "vue";
 import axios from "axios";
 
-const chatInput = ref('Why is the sky blue?')
-
+const chatInput = ref('Hey')
+const messages = ref([{ role: 'agent', content: 'Hello, I am Hal. How can I help you?' }]);
+const currentOutputMessageContent = ref('')
 
 
 async function submitChat(){
+  messages.value.push({role:'user',content:toRaw(chatInput.value)})
+
   await axios.post("http://127.0.0.1:11434/api/generate",
       {
         "model":"mistral",
@@ -15,7 +18,10 @@ async function submitChat(){
       }
   )
       .then((response)=>{
+        console.log(response)
         console.log(response.data.response)
+        currentOutputMessageContent.value = response.data.response
+
       })
 }
 
@@ -24,7 +30,14 @@ async function submitChat(){
 <template>
   <div id="chatBox">
     <div id="chatContainer">
-      <div id="chatArea" ref="chatArea"></div>
+      <div id="chatArea" ref="chatArea">
+        <div v-for="message in messages" :key="message.content">
+          {{ message.content }}
+        </div>
+        <div v-if="currentOutputMessageContent">
+          {{ currentOutputMessageContent }}
+        </div>
+      </div>
     </div>
     <div id="inputArea">
       <input id="chatInput" v-model="chatInput" @keyup.enter="submitChat" />
