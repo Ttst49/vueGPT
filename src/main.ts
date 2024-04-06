@@ -17,10 +17,11 @@ import InputText from "primevue/inputtext";
 import "primevue/resources/themes/aura-light-green/theme.css";
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
+import {createPinia} from "pinia";
 
 
 const app = createApp(App);
-
+const pinia = createPinia()
 app.use(PrimeVue);
 app.component("Button", Button);
 app.component("Textarea", Textarea);
@@ -30,4 +31,6 @@ app.component("ProgressBar", ProgressBar);
 app.component("Dialog", Dialog);
 app.component("InputText", InputText);
 app.use(VueAxios, axios)
+app.use(pinia)
+
 app.mount('#app')
