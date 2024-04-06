@@ -8,8 +8,8 @@ const currentOutputMessageContent = ref('')
 
 
 async function submitChat(){
-  messages.value.push({role:'user',content:toRaw(chatInput.value)})
 
+  messages.value.push({role:'user',content:toRaw(chatInput.value)})
   await axios.post("http://127.0.0.1:11434/api/generate",
       {
         "model":"mistral",
@@ -23,6 +23,7 @@ async function submitChat(){
         currentOutputMessageContent.value = response.data.response
 
       })
+  chatInput.value = ""
 }
 
 </script>
@@ -40,8 +41,12 @@ async function submitChat(){
       </div>
     </div>
     <div id="inputArea">
-      <input id="chatInput" v-model="chatInput" @keyup.enter="submitChat" />
-      <button @click="submitChat" id="submitButton">Submit</button>
+      <Textarea
+      id="chatInput"
+      v-model="chatInput"
+      @keyup.enter="submitChat"
+      />
+      <Button @click="submitChat" id="submitButton">Submit</Button>
     </div>
   </div>
 </template>
