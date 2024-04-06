@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import {ref, toRaw} from "vue";
+import {ref, toRaw, toRefs} from "vue";
 import axios from "axios";
+import ChatMessage from "@/components/ChatMessage.vue";
+import { useModelStore } from '../../stores/model';
 
+const modelStore = useModelStore();
+const { currentModel } = toRefs(modelStore);
 const chatInput = ref('Hey')
 const messages = ref([{ role: 'agent', content: 'Hello, I am Hal. How can I help you?' }]);
 const currentOutputMessageContent = ref('')
@@ -32,11 +36,13 @@ async function submitChat(){
   <div id="chatBox">
     <div id="chatContainer">
       <div id="chatArea" ref="chatArea">
-        <div v-for="message in messages" :key="message.content">
-          {{ message.content }}
-        </div>
-        <div v-if="currentOutputMessageContent">
-          {{ currentOutputMessageContent }}
+        <div id="chatArea" ref="chatArea">
+          <div v-for="message in messages" :key="message.content">
+            <ChatMessage :message="message" />
+          </div>
+          <div v-if="currentOutputMessageContent">
+            <ChatMessage :message="{ role: 'agent', content: currentOutputMessageContent }" />
+          </div>
         </div>
       </div>
     </div>
@@ -71,5 +77,20 @@ async function submitChat(){
   bottom: 0;
   right: 0;
   overflow-y: auto;
+}
+
+#inputArea {
+  display: flex;
+  height: 100px;
+  width: 100%;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+#chatInput {
+  width: calc(100% - 82px);
+  height: 100%;
+  padding: 10px;
+  margin-right: 10px;
 }
 </style>
