@@ -2,10 +2,7 @@
 import {ref, toRaw, toRefs} from "vue";
 import axios from "axios";
 import ChatMessage from "@/components/ChatMessage.vue";
-import { useModelStore } from '../../stores/model';
 
-const modelStore = useModelStore();
-const { currentModel } = toRefs(modelStore);
 const chatInput = ref('Hey')
 const messages = ref([{ role: 'agent', content: 'Hello, I am Hal. How can I help you?' }]);
 const currentOutputMessageContent = ref('')

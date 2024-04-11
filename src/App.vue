@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ModelSelector from "@/components/ModelSelector.vue";
 import ChatBox from "@/components/ChatBox.vue";
 </script>
 
@@ -10,7 +9,7 @@ import ChatBox from "@/components/ChatBox.vue";
         <ChatBox />
       </div>
       <div class="right-col">
-        <ModelSelector />
+
       </div>
     </div>
   </main>
